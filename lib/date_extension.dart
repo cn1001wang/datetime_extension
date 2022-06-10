@@ -4,6 +4,66 @@ import 'package:date_extension/constant.dart';
 import 'package:date_extension/utils.dart';
 
 extension DateExtension on DateTime {
+  DateTime clone() {
+    return DateTime(
+        year, month, day, hour, minute, second, millisecond, microsecond);
+  }
+
+  /// 返回指定单位下两个日期时间之间的差异。
+  num diff(String date, [String unit = DateUnit.ms, bool float = false]) {
+    var input = DateTime.parse(date);
+    return diff2(input, unit, float);
+  }
+
+  num diff2(DateTime input, [String unit = DateUnit.ms, bool float = false]) {
+    Duration duration = difference(input);
+    final processedUnit = processUnit(unit);
+    double result;
+
+    switch (processedUnit) {
+      case DateUnit.y:
+        int yearDiff = (year - input.year);
+        // TODO 计算出当前差别年共多少天
+        int daysPerYear = 365;
+        Duration yearDuration = difference(
+            input.clone().add(Duration(days: yearDiff * daysPerYear)));
+        result = yearDiff +
+            yearDuration.inMicroseconds /
+                daysPerYear *
+                Duration.microsecondsPerDay;
+        break;
+      case DateUnit.m:
+        int monthDiff = (year - input.year) * 12 + (month - input.month);
+        // TODO 计算出当前差别月共多少天
+        int daysPerMonth = 31;
+        Duration monthDuration = difference(
+            input.clone().add(Duration(days: monthDiff * daysPerMonth)));
+        result = monthDiff +
+            monthDuration.inMicroseconds /
+                daysPerMonth *
+                Duration.microsecondsPerDay;
+        break;
+      case DateUnit.d:
+        result = duration.inMicroseconds / Duration.microsecondsPerDay;
+        break;
+      case DateUnit.h:
+        result = duration.inMicroseconds / Duration.microsecondsPerHour;
+        break;
+      case DateUnit.min:
+        result = duration.inMicroseconds / Duration.microsecondsPerMinute;
+        break;
+      case DateUnit.s:
+        result = duration.inMicroseconds / Duration.microsecondsPerSecond;
+        break;
+      case DateUnit.ms:
+        result = duration.inMicroseconds / Duration.microsecondsPerMillisecond;
+        break;
+      default:
+        result = duration.inMicroseconds / Duration.microsecondsPerMillisecond;
+    }
+    return float ? result : result.round();
+  }
+
   String format([String? format]) {
     if (format == null) {
       return toIso8601String();

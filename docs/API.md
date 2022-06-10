@@ -67,3 +67,29 @@ DateTime.now().startOf('year')
 | hour  | h | 当前时间，0 分、0 秒、0 毫秒 |
 | minute  | m | 当前时间，0 秒、0 毫秒 |
 | second  | s | 当前时间，0 毫秒 |
+
+## Difference
+
+返回指定单位下两个日期时间之间的差异。
+
+要获得以毫秒为单位的差异，请使用 dayjs#diff。
+
+```dart
+const date1 = dayjs('2019-01-25')
+const date2 = dayjs('2018-06-05')
+date1.diff(date2) // 20217600000 默认单位是毫秒
+```
+
+要获取其他单位下的差异，则在第二个参数传入相应的单位。
+
+```dart
+const date1 = dayjs('2019-01-25')
+date1.diff('2018-06-05', 'month') // 7
+```
+
+默认情况下 dayjs#diff 会将结果进位成整数。 如果要得到一个浮点数，将 true 作为第三个参数传入。
+
+```dart
+const date1 = dayjs('2019-01-25')
+date1.diff('2018-06-05', 'month', true) // 7.645161290322581
+```
