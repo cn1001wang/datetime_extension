@@ -74,21 +74,24 @@ extension DateExtension on DateTime {
     switch (processedUnit) {
       case DateUnit.y:
         int yearDiff = (year - input.year);
-        // TODO 计算出当前差别年共多少天
-        int daysPerYear = 365;
-        Duration yearDuration = difference(
-            input.clone().add(Duration(days: yearDiff * daysPerYear)));
-        result = yearDiff +
-            yearDuration.inMicroseconds /
-                daysPerYear *
-                Duration.microsecondsPerDay;
+        bool positive = isAfter(input);
+        DateTime smallDate = (positive ? input : this).clone();
+        DateTime largeDate = (positive ? this : input).clone();
+        DateTime anchor =
+            DateExtension(smallDate).add(yearDiff.abs(), DateUnit.y);
+        int daysPerYear =
+            DateExtension(anchor).add(1, DateUnit.y).difference(anchor).inDays;
+        double tail = largeDate.difference(anchor).inMicroseconds /
+            (Duration.microsecondsPerDay * daysPerYear);
+
+        result = yearDiff + (positive ? 1 : -1) * tail;
         break;
       case DateUnit.m:
-        int wholeMonthDiff = (year - input.year) * 12 + (month - input.month);
         // 2022-01-05.diff(2022-03-10) === -2个月5天
         // 2022-03-10.diff(2022-01-05) === 2个月5天
         // 2022-03-05.diff(2022-01-06) === 1个月5+（28-6）天=== 2022-3-5比2022-2-6多27天+2022-2-6比2022-1-6多一个月
 
+        int wholeMonthDiff = (year - input.year) * 12 + (month - input.month);
         bool positive = isAfter(input);
 
         DateTime smallDate = (positive ? input : this).clone();
@@ -98,7 +101,6 @@ extension DateExtension on DateTime {
             DateExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.m);
         int daysPerMonth =
             DateExtension(anchor).add(1, DateUnit.m).difference(anchor).inDays;
-        var a = largeDate.difference(anchor);
         double tail = largeDate.difference(anchor).inMicroseconds /
             (Duration.microsecondsPerDay * daysPerMonth);
         result = wholeMonthDiff + (positive ? 1 : -1) * tail;
