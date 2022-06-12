@@ -60,4 +60,6 @@ class Utils {
 
     return toLowercase ? result.toLowerCase() : result;
   }
+
+  int absFloor(n) => (n < 0 ? n.ceil() : n.floor());
 }

@@ -24,5 +24,7 @@ void main() {
     expect(date1.diff2(date2), 20217600000); //  默认单位是毫秒
     expect(date1.diff('2018-06-05', 'month'), 7);
     expect(date1.diff('2018-06-05', 'month', true), 7.645161290322581);
+    expect(date2.diff('2019-01-25', 'month'), -7);
+    expect(date2.diff('2019-01-25', 'month', true), -7.645161290322581);
   });
 }

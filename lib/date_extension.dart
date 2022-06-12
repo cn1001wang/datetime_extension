@@ -9,6 +9,57 @@ extension DateExtension on DateTime {
         year, month, day, hour, minute, second, millisecond, microsecond);
   }
 
+  DateTime set(int input, String unit) {
+    final processedUnit = processUnit(unit);
+    switch (processedUnit) {
+      case DateUnit.y:
+        return DateTime(
+            input, month, day, hour, minute, second, millisecond, microsecond);
+      case DateUnit.m:
+        return DateTime(
+            year, input, day, hour, minute, second, millisecond, microsecond);
+      case DateUnit.d:
+        return DateTime(
+            year, month, input, hour, minute, second, millisecond, microsecond);
+      case DateUnit.h:
+        return DateTime(
+            year, month, day, input, minute, second, millisecond, microsecond);
+      case DateUnit.min:
+        return DateTime(
+            year, month, day, hour, input, second, millisecond, microsecond);
+      case DateUnit.s:
+        return DateTime(
+            year, month, day, hour, minute, input, millisecond, microsecond);
+      case DateUnit.ms:
+        return DateTime(
+            year, month, day, hour, minute, second, input, microsecond);
+      default:
+        return clone();
+    }
+  }
+
+  DateTime add(int input, String unit) {
+    final processedUnit = processUnit(unit);
+    switch (processedUnit) {
+      case DateUnit.y:
+        return set(input + year, unit);
+      case DateUnit.m:
+        return set(input + month, unit);
+      case DateUnit.d:
+        return set(input + day, unit);
+      case DateUnit.h:
+        return set(input + hour, unit);
+      case DateUnit.min:
+        return set(input + minute, unit);
+      case DateUnit.s:
+        return set(input + second, unit);
+      case DateUnit.ms:
+        return set(input + millisecond, unit);
+      default:
+        return clone();
+    }
+  }
+
   /// 返回指定单位下两个日期时间之间的差异。
   num diff(String date, [String unit = DateUnit.ms, bool float = false]) {
     var input = DateTime.parse(date);
@@ -33,15 +84,25 @@ extension DateExtension on DateTime {
                 Duration.microsecondsPerDay;
         break;
       case DateUnit.m:
-        int monthDiff = (year - input.year) * 12 + (month - input.month);
-        // TODO 计算出当前差别月共多少天
-        int daysPerMonth = 31;
-        Duration monthDuration = difference(
-            input.clone().add(Duration(days: monthDiff * daysPerMonth)));
-        result = monthDiff +
-            monthDuration.inMicroseconds /
-                daysPerMonth *
-                Duration.microsecondsPerDay;
+        int wholeMonthDiff = (year - input.year) * 12 + (month - input.month);
+        // 2022-01-05.diff(2022-03-10) === -2个月5天
+        // 2022-03-10.diff(2022-01-05) === 2个月5天
+        // 2022-03-05.diff(2022-01-06) === 1个月5+（28-6）天=== 2022-3-5比2022-2-6多27天+2022-2-6比2022-1-6多一个月
+
+        bool positive = isAfter(input);
+
+        DateTime smallDate = (positive ? input : this).clone();
+        DateTime largeDate = (positive ? this : input).clone();
+
+        DateTime anchor =
+            DateExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.m);
+        int daysPerMonth =
+            DateExtension(anchor).add(1, DateUnit.m).difference(anchor).inDays;
+        var a = largeDate.difference(anchor);
+        double tail = largeDate.difference(anchor).inMicroseconds /
+            (Duration.microsecondsPerDay * daysPerMonth);
+        result = wholeMonthDiff + (positive ? 1 : -1) * tail;
+
         break;
       case DateUnit.d:
         result = duration.inMicroseconds / Duration.microsecondsPerDay;
@@ -61,7 +122,7 @@ extension DateExtension on DateTime {
       default:
         result = duration.inMicroseconds / Duration.microsecondsPerMillisecond;
     }
-    return float ? result : result.round();
+    return float ? result : Utils().absFloor(result);
   }
 
   String format([String? format]) {
