@@ -1,26 +1,27 @@
 class DateUnit {
   static const y = 'year';
-  static const m = 'month';
+  static const M = 'month';
   static const d = 'date';
   static const w = 'weekday';
   static const h = 'hour';
-  static const min = 'minute';
+  static const m = 'minute';
   static const s = 'second';
   static const ms = 'millisecond';
 }
 
 const unitMap = {
   'y': DateUnit.y,
-  'M': DateUnit.m,
+  'M': DateUnit.M,
   'd': DateUnit.d,
   'w': DateUnit.w,
   'h': DateUnit.h,
-  'm': DateUnit.min,
+  'm': DateUnit.m,
   's': DateUnit.s,
   'ms': DateUnit.ms
 };
 
-String? processUnit(String unit) {
+String? processUnit([String? unit]) {
+  if (unit == null) return null;
   if (unitMap.containsKey(unit)) {
     return unitMap[unit];
   }

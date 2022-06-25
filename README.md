@@ -2,5 +2,5 @@
 
 ## TODO
 
-- [ ] format
-- [x] 
+- [ ] Time from now(this need translate)
+- [ ]
