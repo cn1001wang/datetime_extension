@@ -205,6 +205,7 @@ extension DateExtension on DateTime {
             : DateTime(d.year, d.month + 1, 1)
                 .subtract(const Duration(milliseconds: 1));
       case DateUnit.d:
+      case DateUnit.D:
         return isStartOf
             ? DateTime(d.year, d.month, d.day)
             : DateTime(d.year, d.month, d.day + 1)

@@ -1,7 +1,8 @@
 class DateUnit {
   static const y = 'year';
   static const M = 'month';
-  static const d = 'date';
+  static const d = 'day';
+  static const D = 'date';
   static const w = 'weekday';
   static const h = 'hour';
   static const m = 'minute';
@@ -13,6 +14,7 @@ const unitMap = {
   'y': DateUnit.y,
   'M': DateUnit.M,
   'd': DateUnit.d,
+  'D': DateUnit.D,
   'w': DateUnit.w,
   'h': DateUnit.h,
   'm': DateUnit.m,
@@ -26,7 +28,7 @@ String? processUnit([String? unit]) {
     return unitMap[unit];
   }
 
-  return unit.trim().toLowerCase();
+  return unit.trim().toLowerCase().replaceFirst(RegExp(r's$'), "");
 }
 
 const dayDartRegexpFormat =
