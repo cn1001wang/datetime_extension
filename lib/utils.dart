@@ -1,3 +1,5 @@
+import 'date_extension.dart';
+
 class Utils {
   String processMatchFromFormat(Match m, DateTime day) {
     final mm = m[0]; // First match
@@ -5,6 +7,8 @@ class Utils {
     if (mm != null && mm.startsWith('[') && mm.endsWith(']')) {
       return mm.substring(1, mm.length - 1);
     }
+
+    final locale = day.getLocale();
 
     switch (mm) {
       case 'Y':
@@ -18,12 +22,28 @@ class Utils {
         return day.month.toString();
       case 'MM':
         return day.month.toString().padLeft(2, '0');
+      case 'MMM':
+        return locale['Name'] == 'en'
+            ? locale['Months'][day.month].substring(0, 3)
+            : locale['MonthsShort'][day.month];
+      case 'MMMM':
+        return locale['Months'][day.month];
       case 'D':
         return day.day.toString();
       case 'DD':
         return day.day.toString().padLeft(2, '0');
       case 'W':
         return day.weekday.toString();
+      case 'WW':
+        return locale['Name'] == 'en'
+            ? locale['Weekdays'][day.weekday].substring(0, 2)
+            : locale['WeekdaysMin'][day.weekday];
+      case 'WWW':
+        return locale['Name'] == 'en'
+            ? locale['Weekdays'][day.weekday].substring(0, 3)
+            : locale['WeekdaysShort'][day.weekday];
+      case 'WWWW':
+        return locale['Weekdays'][day.weekday];
       case 'H':
         return day.hour.toString();
       case 'HH':
@@ -43,9 +63,9 @@ class Utils {
       case 'SSS':
         return day.millisecond.toString().padLeft(3, '0');
       case 'A':
-        return _toAMOrPM(day.hour);
+        return _toAMOrPM(day.hour, locale);
       case 'a':
-        return _toAMOrPM(day.hour, true);
+        return _toAMOrPM(day.hour, locale, true);
       default:
         return day.toIso8601String();
     }
@@ -55,7 +75,7 @@ class Utils {
     return hour <= 12 ? hour : hour - 12;
   }
 
-  String _toAMOrPM(int hour, [bool toLowercase = false]) {
+  String _toAMOrPM(int hour, dynamic locale, [bool toLowercase = false]) {
     final result = hour < 12 ? 'AM' : 'PM';
 
     return toLowercase ? result.toLowerCase() : result;

@@ -1,9 +1,32 @@
 library date_extension;
 
+import 'package:date_extension/i18n/en.dart' as en_locale;
+
 import 'package:date_extension/constant.dart';
 import 'package:date_extension/utils.dart';
 
 extension DateExtension on DateTime {
+  static var _locale = en_locale.locale;
+
+  static Map<String, dynamic> get locale => _locale;
+
+  static set locale(Map<String, dynamic> locale) => _locale = locale;
+
+  // var _localLocale;
+
+  // Map<String, dynamic>? get localLocale => _localLocale;
+
+  // DateTime useLocale(Map<String, dynamic> localLocale) {
+  //   final d = clone();
+
+  //   d._localLocale = localLocale;
+
+  //   return d;
+  // }
+
+  Map<String, dynamic> getLocale() => DateExtension.locale;
+  //  localLocale ??
+
   /// 判断[d]与this是否完全相同
   bool isSame(DateTime d) => isAtSameMomentAs(d);
 
@@ -35,9 +58,10 @@ extension DateExtension on DateTime {
     i = i ?? '()';
     final dAi = i[0] == '(';
     final dBi = i[1] == ')';
+
     return ((dAi ? isAfterUnit(a, u) : !isBeforeUnit(a, u)) &&
             (dBi ? isBeforeUnit(b, u) : !isAfterUnit(b, u))) ||
-        ((dAi ? isBeforeUnit(a, u) : !isAfterUnit(b, u)) &&
+        ((dAi ? isBeforeUnit(a, u) : !isAfterUnit(a, u)) &&
             (dBi ? isAfterUnit(b, u) : !isBeforeUnit(b, u)));
   }
 
@@ -153,13 +177,12 @@ extension DateExtension on DateTime {
         DateTime largeDate = (positive ? this : input).clone();
 
         DateTime anchor =
-            DateExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.m);
+            DateExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.M);
         int daysPerMonth =
-            DateExtension(anchor).add(1, DateUnit.m).difference(anchor).inDays;
+            DateExtension(anchor).add(1, DateUnit.M).difference(anchor).inDays;
         double tail = largeDate.difference(anchor).inMicroseconds /
             (Duration.microsecondsPerDay * daysPerMonth);
         result = wholeMonthDiff + (positive ? 1 : -1) * tail;
-
         break;
       case DateUnit.d:
         result = duration.inMicroseconds / Duration.microsecondsPerDay;
