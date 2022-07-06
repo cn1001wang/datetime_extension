@@ -44,11 +44,11 @@ in my opinion, 2021-03-01 比 2020-02-01 多了 1年零28天 ，可以拆解为 
 
 ### Documentation
 
-- 📚 [API](https://github.com/cn1001wang/date_extension/API.md)
+- 📚 [API](https://github.com/cn1001wang/date_extension/blob/main/API.md)
 
-- ⚙️ [Plugins](https://github.com/cn1001wang/date_extension/PLUGINS.md)
+- ⚙️ [Plugins](https://github.com/cn1001wang/date_extension/blob/main/PLUGINS.md)
 
-- 🌐 [I18n](https://github.com/cn1001wang/date_extension/I18N.md)
+- 🌐 [I18n](https://github.com/cn1001wang/date_extension/blob/main/I18N.md)
 
 ## License
 
