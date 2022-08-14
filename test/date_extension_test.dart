@@ -1,7 +1,7 @@
-import 'package:date_extension/constant.dart';
+import 'package:datetime_extension/constant.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:date_extension/date_extension.dart';
+import 'package:datetime_extension/datetime_extension.dart';
 
 void main() {
   test("get startOf Year", () {
@@ -29,21 +29,21 @@ void main() {
     expect(date.addTime(2, "M"), DateTime(2022, 8, 9, 10, 50, 20));
   });
 
-  test("diff", () {
+  test("diff2", () {
     final date1 = DateTime.parse('2019-01-25');
     final date2 = DateTime.parse('2018-06-05');
 
-    expect(date1.diff2(date2), 20217600000); //  默认单位是毫秒
-    expect(date1.diff("2020-02-25", "year"), -1);
-    expect(date1.diff("2018-12-01", "year", true), 0.15300546448087426);
-    expect(DateTime.parse("2018-12-01").diff("2019-01-25", "year", true),
+    expect(date1.diff(date2), 20217600000); //  默认单位是毫秒
+    expect(date1.diff2("2020-02-25", "year"), -1);
+    expect(date1.diff2("2018-12-01", "year", true), 0.15300546448087426);
+    expect(DateTime.parse("2018-12-01").diff2("2019-01-25", "year", true),
         -0.15300546448087426);
-    expect(date1.diff('2018-06-05', 'month'), 7);
-    expect(date1.diff('2018-06-05', 'month', true), 7.645161290322581);
-    expect(date2.diff('2019-01-25', 'month'), -7);
-    expect(date2.diff('2019-01-25', 'month', true), -7.645161290322581);
-    expect(date1.diff("2018-12-01", DateUnit.d, true), 55);
-    expect(date1.diff("2019-01-25 00:20:00", DateUnit.m), -20);
+    expect(date1.diff2('2018-06-05', 'month'), 7);
+    expect(date1.diff2('2018-06-05', 'month', true), 7.645161290322581);
+    expect(date2.diff2('2019-01-25', 'month'), -7);
+    expect(date2.diff2('2019-01-25', 'month', true), -7.645161290322581);
+    expect(date1.diff2("2018-12-01", DateUnit.d, true), 55);
+    expect(date1.diff2("2019-01-25 00:20:00", DateUnit.m), -20);
   });
 
   test("isSame", () {

@@ -1,6 +1,6 @@
-import 'package:date_extension/constant.dart';
+import 'package:datetime_extension/constant.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:date_extension/date_extension.dart';
+import 'package:datetime_extension/datetime_extension.dart';
 
 void main() {
   group('Diff:', () {
@@ -10,66 +10,66 @@ void main() {
       final d2 = DateTime.parse('2021-05-01T10:30:30.000Z');
       final d3 = DateTime.parse('2020-04-30T10:30:30.000Z');
 
-      expect(d1.diff2(d2, 'y'), equals(-2));
-      expect(d1.diff2(d2, 'y', true), equals(-2.0027397260273972603));
-      expect(d2.diff2(d1, 'y'), equals(2));
-      expect(d2.diff2(d1, 'y', true), equals(2.0027397260273972603));
-      expect(d3.diff2(d1, 'y'), equals(1));
-      expect(d3.diff2(d1, 'y', true), equals(1));
+      expect(d1.diff(d2, 'y'), equals(-2));
+      expect(d1.diff(d2, 'y', true), equals(-2.0027397260273972603));
+      expect(d2.diff(d1, 'y'), equals(2));
+      expect(d2.diff(d1, 'y', true), equals(2.0027397260273972603));
+      expect(d3.diff(d1, 'y'), equals(1));
+      expect(d3.diff(d1, 'y', true), equals(1));
     });
 
     test('2 months', () {
       final d2 = DateTime.parse('2019-02-01T10:30:30.000Z');
 
-      expect(d1.diff2(d2, DateUnit.M), equals(2));
-      expect(d2.diff2(d1, 'M'), equals(-2));
-      expect(d1.diff2(d2, DateUnit.M, true), equals(2 + 29 / 30));
+      expect(d1.diff(d2, DateUnit.M), equals(2));
+      expect(d2.diff(d1, 'M'), equals(-2));
+      expect(d1.diff(d2, DateUnit.M, true), equals(2 + 29 / 30));
     });
 
     test('33 days', () {
       final d2 = DateTime.parse('2019-06-02T11:30:30.000Z');
 
-      expect(d1.diff2(d2, 'd'), equals(-33));
-      expect(d2.diff2(d1, 'd'), equals(33));
-      expect(d1.diff2(d2, 'd', true), equals(-33.041666666666664));
-      expect(d2.diff2(d1, 'd', true), equals(33.041666666666664));
+      expect(d1.diff(d2, 'd'), equals(-33));
+      expect(d2.diff(d1, 'd'), equals(33));
+      expect(d1.diff(d2, 'd', true), equals(-33.041666666666664));
+      expect(d2.diff(d1, 'd', true), equals(33.041666666666664));
     });
 
     test('10 hours', () {
       final d2 = DateTime.parse('2019-04-30T20:40:30.000Z');
 
-      expect(d1.diff2(d2, 'h'), equals(-10));
-      expect(d2.diff2(d1, 'h'), equals(10));
-      expect(d1.diff2(d2, 'h', true), equals(-10.166666666666666));
-      expect(d2.diff2(d1, 'h', true), equals(10.166666666666666));
+      expect(d1.diff(d2, 'h'), equals(-10));
+      expect(d2.diff(d1, 'h'), equals(10));
+      expect(d1.diff(d2, 'h', true), equals(-10.166666666666666));
+      expect(d2.diff(d1, 'h', true), equals(10.166666666666666));
     });
 
     test('55 minutes', () {
       final d2 = DateTime.parse('2019-04-30T11:25:40.000Z');
 
-      expect(d1.diff2(d2, 'm'), equals(-55));
-      expect(d2.diff2(d1, 'm'), equals(55));
-      expect(d1.diff2(d2, 'm', true), equals(-55.166666666666664));
-      expect(d2.diff2(d1, 'm', true), equals(55.166666666666664));
+      expect(d1.diff(d2, 'm'), equals(-55));
+      expect(d2.diff(d1, 'm'), equals(55));
+      expect(d1.diff(d2, 'm', true), equals(-55.166666666666664));
+      expect(d2.diff(d1, 'm', true), equals(55.166666666666664));
     });
 
     test('3 seconds', () {
       final d2 = DateTime.parse('2019-04-30T10:30:33.110Z');
 
-      expect(d1.diff2(d2, 's'), equals(-3));
-      expect(d2.diff2(d1, 's'), equals(3));
-      expect(d1.diff2(d2, 's', true), equals(-3.11));
-      expect(d2.diff2(d1, 's', true), equals(3.11));
+      expect(d1.diff(d2, 's'), equals(-3));
+      expect(d2.diff(d1, 's'), equals(3));
+      expect(d1.diff(d2, 's', true), equals(-3.11));
+      expect(d2.diff(d1, 's', true), equals(3.11));
     });
 
     test('333 milliseconds', () {
       final d2 = DateTime.parse('2019-04-30T10:30:30.333Z');
 
-      expect(d1.diff2(d2), equals(-333));
-      expect(d1.diff2(d2, 'ms'), equals(-333));
-      expect(d2.diff2(d1, 'ms'), equals(333));
-      expect(d1.diff2(d2, 'ms', true), equals(-333));
-      expect(d2.diff2(d1, 'ms', true), equals(333));
+      expect(d1.diff(d2), equals(-333));
+      expect(d1.diff(d2, 'ms'), equals(-333));
+      expect(d2.diff(d1, 'ms'), equals(333));
+      expect(d1.diff(d2, 'ms', true), equals(-333));
+      expect(d2.diff(d1, 'ms', true), equals(333));
     });
   });
 

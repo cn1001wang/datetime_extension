@@ -3,7 +3,7 @@
 ## usage
 
 ```dart
-import 'package:date_extension/date_extension.dart';
+import 'package:datetime_extension/datetime_extension.dart';
 ```
 
 ## 解析
@@ -41,7 +41,7 @@ DateTime.now().add(Duration(days: 1))
 // or
 DateTime.now().addTime(1,"d"); // Get the current time until tomorrow
 // or
-DateExtension(DateTime.now()).add(1,"d");
+DateTimeExtension(DateTime.now()).add(1,"d");
 ```
 
 ### Subtract
@@ -53,7 +53,7 @@ DateTime.now().subtract(Duration(days: 1))
 // or
 DateTime.now().subtractTime(1,"d"); // Get the current time until yesterday
 // or
-DateExtension(DateTime.now()).subtract(1,"d");
+DateTimeExtension(DateTime.now()).subtract(1,"d");
 ```
 
 ### Start of Time
@@ -159,7 +159,7 @@ isBefore是dart本身提供的功能
 final d1=DateTime.parse("2020-01-01");
 final d2=DateTime.parse("2022-01-01");
 d1.isBefore(d2);//true
-// <与>为DateExtension提供的功能，Dart提供了==
+// <与>为DateTimeExtension提供的功能，Dart提供了==
 d1<d2;
 
 ```
@@ -182,7 +182,7 @@ isAfter是dart本身提供的功能
 final d1=DateTime.parse("2020-01-01");
 final d2=DateTime.parse("2022-01-01");
 d2.isAfter(d1); // true
-// <与>为DateExtension提供的功能，Dart提供了==
+// <与>为DateTimeExtension提供的功能，Dart提供了==
 d2>d1;
 
 ```

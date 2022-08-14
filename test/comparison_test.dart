@@ -1,7 +1,7 @@
-import 'package:date_extension/constant.dart';
+import 'package:datetime_extension/constant.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:date_extension/date_extension.dart';
+import 'package:datetime_extension/datetime_extension.dart';
 
 void main() {
   test("isBeforeUnit,isAfterUnit", () {

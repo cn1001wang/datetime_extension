@@ -1,11 +1,11 @@
-library date_extension;
+library datetime_extension;
 
-import 'package:date_extension/i18n/en.dart' as en_locale;
+import 'package:datetime_extension/i18n/en.dart' as en_locale;
 
-import 'package:date_extension/constant.dart';
-import 'package:date_extension/utils.dart';
+import 'package:datetime_extension/constant.dart';
+import 'package:datetime_extension/utils.dart';
 
-extension DateExtension on DateTime {
+extension DateTimeExtension on DateTime {
   static var _locale = en_locale.locale;
 
   static Map<String, dynamic> get locale => _locale;
@@ -24,7 +24,7 @@ extension DateExtension on DateTime {
   //   return d;
   // }
 
-  Map<String, dynamic> getLocale() => DateExtension.locale;
+  Map<String, dynamic> getLocale() => DateTimeExtension.locale;
   //  localLocale ??
 
   /// 判断[d]与this是否完全相同
@@ -126,26 +126,27 @@ extension DateExtension on DateTime {
 
   /// 由于DateTime已经有了add方法 , 原有接收的是Duration类型，取了别名addTime
   DateTime addTime(int input, String unit) {
-    return DateExtension(this).add(input, unit);
+    return DateTimeExtension(this).add(input, unit);
   }
 
   /// 减少[input]个[unit]
   DateTime subtract(int input, String unit) {
-    return DateExtension(this).add(-input, unit);
+    return DateTimeExtension(this).add(-input, unit);
   }
 
   /// 由于DateTime已经有了subtract方法 , 原有接收的是Duration类型，取了别名subtractTime
   DateTime subtractTime(int input, String unit) {
-    return DateExtension(this).subtract(input, unit);
+    return DateTimeExtension(this).subtract(input, unit);
   }
 
   /// 返回指定单位下两个日期时间之间的差异。
-  num diff(String date, [String unit = DateUnit.ms, bool float = false]) {
+  num diff2(String date, [String unit = DateUnit.ms, bool float = false]) {
     var input = DateTime.parse(date);
-    return diff2(input, unit, float);
+    return diff(input, unit, float);
   }
 
-  num diff2(DateTime input, [String unit = DateUnit.ms, bool float = false]) {
+  /// 返回[unit]单位下的时间差，如果[float]为true返回原值，为false返回floor值
+  num diff(DateTime input, [String unit = DateUnit.ms, bool float = false]) {
     Duration duration = difference(input);
     final processedUnit = processUnit(unit);
     double result;
@@ -157,9 +158,11 @@ extension DateExtension on DateTime {
         DateTime smallDate = (positive ? input : this).clone();
         DateTime largeDate = (positive ? this : input).clone();
         DateTime anchor =
-            DateExtension(smallDate).add(yearDiff.abs(), DateUnit.y);
-        int daysPerYear =
-            DateExtension(anchor).add(1, DateUnit.y).difference(anchor).inDays;
+            DateTimeExtension(smallDate).add(yearDiff.abs(), DateUnit.y);
+        int daysPerYear = DateTimeExtension(anchor)
+            .add(1, DateUnit.y)
+            .difference(anchor)
+            .inDays;
         double tail = largeDate.difference(anchor).inMicroseconds /
             (Duration.microsecondsPerDay * daysPerYear);
 
@@ -177,9 +180,11 @@ extension DateExtension on DateTime {
         DateTime largeDate = (positive ? this : input).clone();
 
         DateTime anchor =
-            DateExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.M);
-        int daysPerMonth =
-            DateExtension(anchor).add(1, DateUnit.M).difference(anchor).inDays;
+            DateTimeExtension(smallDate).add(wholeMonthDiff.abs(), DateUnit.M);
+        int daysPerMonth = DateTimeExtension(anchor)
+            .add(1, DateUnit.M)
+            .difference(anchor)
+            .inDays;
         double tail = largeDate.difference(anchor).inMicroseconds /
             (Duration.microsecondsPerDay * daysPerMonth);
         result = wholeMonthDiff + (positive ? 1 : -1) * tail;
